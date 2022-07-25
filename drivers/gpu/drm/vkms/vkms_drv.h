@@ -145,4 +145,8 @@ void vkms_set_composer(struct vkms_output *out, bool enabled);
 /* Writeback */
 int vkms_enable_writeback_connector(struct vkms_device *vkmsdev);
 
+/* IOCTLs */
+extern int vkms_hotplug_ioctl(struct drm_device *dev, void *data,
+			      struct drm_file *file_priv);
+
 #endif /* _VKMS_DRV_H_ */

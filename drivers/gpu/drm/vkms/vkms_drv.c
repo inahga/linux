@@ -26,6 +26,8 @@
 #include <drm/drm_gem_shmem_helper.h>
 #include <drm/drm_vblank.h>
 
+#include <drm/vkms_drm.h>
+
 #include "vkms_drv.h"
 
 #include <drm/drm_print.h>
@@ -112,11 +114,16 @@ static void vkms_config_debugfs_init(struct drm_minor *minor)
 				 minor->debugfs_root, minor);
 }
 
+struct drm_ioctl_desc vkms_ioctls[] = {
+	DRM_IOCTL_DEF_DRV(VKMS_HOTPLUG, vkms_hotplug_ioctl, 0),
+};
+
 static const struct drm_driver vkms_driver = {
 	.driver_features	= DRIVER_MODESET | DRIVER_ATOMIC | DRIVER_GEM,
 	.release		= vkms_release,
 	.fops			= &vkms_driver_fops,
 	DRM_GEM_SHMEM_DRIVER_OPS,
+
 
 	.debugfs_init           = vkms_config_debugfs_init,
 
@@ -125,6 +132,9 @@ static const struct drm_driver vkms_driver = {
 	.date			= DRIVER_DATE,
 	.major			= DRIVER_MAJOR,
 	.minor			= DRIVER_MINOR,
+
+	.ioctls     = vkms_ioctls,
+	.num_ioctls = ARRAY_SIZE(vkms_ioctls),
 };
 
 static const struct drm_mode_config_funcs vkms_mode_funcs = {
